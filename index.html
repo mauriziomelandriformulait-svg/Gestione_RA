@@ -21,31 +21,31 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .wf-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.12);
         }
         .connection-line { stroke: #FDB913; stroke-width: 2; fill: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-white text-slate-800">
+<body class="min-h-screen flex flex-col bg-white text-slate-800 max-w-5xl mx-auto border-x border-slate-100 shadow-sm">
 
     <!-- Titolo Semplice in Alto -->
-    <div class="px-8 pt-6 pb-2 flex justify-between items-center bg-white border-b border-slate-100">
+    <div class="px-5 pt-4 pb-2 flex justify-between items-center bg-white border-b border-slate-100">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Work Flow Ritenute Acconto</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Workflow Operativo Interactive ERP</p>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">Work Flow Ritenute Acconto</h1>
+            <p class="text-[11px] text-slate-500">Workflow Operativo Interactive ERP</p>
         </div>
-        <div class="flex items-center space-x-2 text-xs text-slate-500 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg">
-            <i data-lucide="info" class="w-4 h-4 text-formula"></i>
+        <div class="flex items-center space-x-1.5 text-[11px] text-slate-500 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-md">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-formula"></i>
             <span>Clicca su qualsiasi fase per aprire l'azione corrispondente</span>
         </div>
     </div>
 
-    <!-- Workflow Canvas Grid -->
-    <main class="flex-1 relative canvas-bg overflow-auto p-8 min-h-[600px]" id="canvas">
-        <svg id="svgOverlay" class="absolute inset-0 w-full h-full pointer-events-none z-0" style="min-width: 1500px; min-height: 1000px;">
+    <!-- Workflow Canvas Grid (Compatto) -->
+    <main class="flex-1 relative canvas-bg overflow-auto p-4 min-h-[420px]" id="canvas">
+        <svg id="svgOverlay" class="absolute inset-0 w-full h-full pointer-events-none z-0" style="min-width: 950px; min-height: 520px;">
             <defs>
-                <marker id="arrowhead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <marker id="arrowhead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#FDB913"/>
                 </marker>
             </defs>
@@ -55,17 +55,19 @@
     </main>
 
     <!-- Footer Status -->
-    <footer class="bg-white border-t border-slate-200 px-6 py-3 text-xs text-slate-500 flex justify-between items-center">
+    <footer class="bg-white border-t border-slate-200 px-5 py-2 text-[11px] text-slate-500 flex justify-between items-center">
         <span>Sistema ERP Formula Suite</span>
         <span>Generato automaticamente • Ready for Production</span>
     </footer>
 
     <script>
+        const CARD_WIDTH = 208; // Larghezza ridotta delle card (w-52 = 13rem = 208px)
+
         const nodes = [
   {
     "id": "node_1793285676527",
     "x": 20,
-    "y": 190,
+    "y": 40,
     "title": "Ricezione FE",
     "sub": "WA Monitor FEP",
     "icon": "box",
@@ -78,7 +80,7 @@
   {
     "id": "node_1793285791916",
     "x": 20,
-    "y": 380,
+    "y": 200,
     "title": "On/Off Pagabilità",
     "sub": "Libera/Sospendi pagabilità",
     "icon": "receipt",
@@ -90,8 +92,8 @@
   },
   {
     "id": "node_1793285856247",
-    "x": 450,
-    "y": 190,
+    "x": 330,
+    "y": 40,
     "title": "Pagamento",
     "sub": "Cruscotto pagamenti",
     "icon": "receipt",
@@ -103,8 +105,8 @@
   },
   {
     "id": "node_1793286418706",
-    "x": 850,
-    "y": 160,
+    "x": 640,
+    "y": 20,
     "title": "Versamento RA",
     "sub": "Computo versamenti RA",
     "icon": "shopping-cart",
@@ -125,8 +127,8 @@
   },
   {
     "id": "node_1793286597513",
-    "x": 850,
-    "y": 420,
+    "x": 640,
+    "y": 230,
     "title": "Adempimenti",
     "sub": "Fisco",
     "icon": "credit-card",
@@ -147,7 +149,6 @@
   }
 ];
 
-        // Manteniamo solo la connessione valida tra i nodi desiderati
         const connections = [
   {
     "id": "conn_1793285872495",
@@ -172,38 +173,39 @@
             // Render Nodes
             nodes.forEach(node => {
                 const card = document.createElement('div');
-                card.className = "absolute wf-card bg-white rounded-lg border border-slate-300 border-b-[3px] border-b-amber-400 shadow-sm p-3 w-60 cursor-pointer hover:border-formula";
+                card.className = "absolute wf-card bg-white rounded-md border border-slate-300 border-b-[3px] border-b-amber-400 shadow-sm p-2.5 w-52 cursor-pointer hover:border-formula";
                 card.id = node.id;
                 card.style.left = node.x + 'px';
                 card.style.top = node.y + 'px';
                 card.onclick = () => handleNodeClick(node);
 
                 card.innerHTML = `
-                    <div class="flex items-start justify-between mb-2">
-                        <div class="w-9 h-9 rounded-lg bg-white text-slate-800 flex items-center justify-center font-bold">
-                            <i data-lucide="${node.icon || 'file-text'}" class="w-5 h-5"></i>
+                    <div class="flex items-start justify-between mb-1.5">
+                        <div class="w-7 h-7 rounded bg-slate-50 text-slate-800 flex items-center justify-center font-bold border border-slate-100">
+                            <i data-lucide="${node.icon || 'file-text'}" class="w-4 h-4"></i>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded text-slate-700 border border-slate-200" style="background-color: #fff8e4">
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-slate-700 border border-slate-200" style="background-color: #fff8e4">
                             ${node.badge || 'STEP'}
                         </span>
                     </div>
-                    <h4 class="font-bold text-sm text-slate-800 leading-tight">${node.title}</h4>
-                    <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">${node.sub || ''}</p>
-                    <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-amber-600 font-semibold">
+                    <h4 class="font-bold text-xs text-slate-800 leading-tight">${node.title}</h4>
+                    <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">${node.sub || ''}</p>
+                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-amber-600 font-semibold">
                         <span>Esegui azione</span>
-                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
                     </div>
                 `;
                 if (node.type === 'links') {
-                    const list=document.createElement('div');
-                    list.className='px-3 pb-3';
-                    (node.links||[]).forEach(link=>{
-                        const a=document.createElement('a');
-                        a.textContent='↗ '+link.title;
-                        a.href=['https:', 'http:'].some(prefix => (link.url || '').toLowerCase().startsWith(prefix)) || (link.url || '').startsWith('/') || (link.url || '').startsWith('#') || (link.url || '').startsWith('./') ? link.url : '#';
-                        a.target='_blank'; a.rel='noopener noreferrer';
-                        a.className='block text-xs text-amber-800 hover:underline py-1';
-                        a.onclick=e=>e.stopPropagation();
+                    const list = document.createElement('div');
+                    list.className = 'px-1 pt-1.5 pb-1';
+                    (node.links || []).forEach(link => {
+                        const a = document.createElement('a');
+                        a.textContent = '↗ ' + link.title;
+                        a.href = ['https:', 'http:'].some(prefix => (link.url || '').toLowerCase().startsWith(prefix)) || (link.url || '').startsWith('/') || (link.url || '').startsWith('#') || (link.url || '').startsWith('./') ? link.url : '#';
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.className = 'block text-[11px] text-amber-800 hover:underline py-0.5';
+                        a.onclick = e => e.stopPropagation();
                         list.appendChild(a);
                     });
                     card.appendChild(list);
@@ -211,7 +213,7 @@
                 container.appendChild(card);
             });
 
-            // Render Connections con calcolo esatto delle altezze
+            // Render Connections
             setTimeout(() => {
                 connections.forEach(conn => {
                     const src = nodes.find(n => n.id === conn.from);
@@ -223,19 +225,19 @@
 
                     const fromSide = conn.fromSide || (tgt.x >= src.x ? 'right' : 'left');
                     const toSide = conn.toSide || (src.x <= tgt.x ? 'left' : 'right');
-                    
-                    const sh = srcEl ? srcEl.offsetHeight : 125;
-                    const th = tgtEl ? tgtEl.offsetHeight : 125;
-                    
-                    const x1 = src.x + (fromSide === 'right' ? 240 : 0);
+
+                    const sh = srcEl ? srcEl.offsetHeight : 100;
+                    const th = tgtEl ? tgtEl.offsetHeight : 100;
+
+                    const x1 = src.x + (fromSide === 'right' ? CARD_WIDTH : 0);
                     const y1 = src.y + sh / 2;
-                    const x2 = tgt.x + (toSide === 'right' ? 240 : 0);
+                    const x2 = tgt.x + (toSide === 'right' ? CARD_WIDTH : 0);
                     const y2 = tgt.y + th / 2;
-                    
-                    const bend = Math.max(55, Math.abs(x2 - x1) * 0.48);
+
+                    const bend = Math.max(35, Math.abs(x2 - x1) * 0.45);
                     const d1 = fromSide === 'right' ? 1 : -1;
                     const d2 = toSide === 'right' ? 1 : -1;
-                    
+
                     const cp1x = x1 + d1 * bend;
                     const cp1y = y1;
                     const cp2x = x2 + d2 * bend;
@@ -243,7 +245,6 @@
 
                     const pathData = `M ${x1} ${y1} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x2} ${y2}`;
 
-                    // Punto medio esatto della curva Bézier cubica (t = 0.5)
                     const labelX = 0.125 * x1 + 0.375 * cp1x + 0.375 * cp2x + 0.125 * x2;
                     const labelY = 0.125 * y1 + 0.375 * cp1y + 0.375 * cp2y + 0.125 * y2;
 
@@ -256,7 +257,7 @@
                     if (conn.label) {
                         const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                         g.setAttribute('transform', `translate(${labelX}, ${labelY})`);
-                        g.innerHTML = `<rect x="${-conn.label.length * 3.5 - 8}" y="-10" width="${conn.label.length * 7 + 16}" height="20" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text text-anchor="middle" dy="4" font-size="10" font-weight="600" fill="#475569">${conn.label}</text>`;
+                        g.innerHTML = `<rect x="${-conn.label.length * 3 - 6}" y="-8" width="${conn.label.length * 6 + 12}" height="16" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text text-anchor="middle" dy="3" font-size="9" font-weight="600" fill="#475569">${conn.label}</text>`;
                         svg.appendChild(g);
                     }
                 });
